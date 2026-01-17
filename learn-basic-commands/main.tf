@@ -4,9 +4,20 @@ resource "local_file" "hello_world" {
 }
 
 resource "local_file" "file_created_using_count" {
-    filename = var.filenames[count.index]
-    count = length(var.filenames)
+    filename = var.filenames-using-count[count.index]
+    count = length(var.filenames-using-count)
     content = "Message: File is created using count meta argument"
+}
+
+resource "local_file" "file_created_using_foreach" {
+  filename = each.value
+  for_each = var.filenames-using-foreach
+  content = "Message: File is created using for-each argument"
+}
+
+output "files_created_using_loops" {
+  value = local_file.file_created_using_foreach
+  sensitive = true
 }
 
 output "created-filename" {
